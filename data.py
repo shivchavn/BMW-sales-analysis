@@ -7,15 +7,32 @@ df = pd.read_csv(r"C:\Users\BMW sales data (2010-2024) (1).csv")
 
 # -----------------------------
 # Basic Exploration
-# -----------------------------
+# --------------------------
 print(df.head())
 print(df.info())
 print(df.describe())
+#----------------------
+# removing duplicates
+df = df.drop_duplicates()
+#----------------------
+# checking missing
+print(df.isnull().sum())
+
+#--------------------
+#
+#-----------------------
+total_sales = df["Sales_Volume"].sum()
+avg_price = df["Price_USD"].mean()
+avg_engine = df["Engine_Size_L"].mean()
+
+print("Total Sales Volume:", total_sales)
+print("Average Price:", avg_price)
+print("Average Engine Size:", avg_engine)
 
 
-# -----------------------------
+# --------------------------
 # 1. Year-wise Total Sales
-# -----------------------------
+# ---------------------------
 year_sales = df.groupby("Year")["Sales_Volume"].sum()
 
 plt.figure()
@@ -24,6 +41,7 @@ plt.xlabel("Year")
 plt.ylabel("Total Sales Volume")
 plt.title("BMW Total Sales Volume by Year")
 plt.show()
+
 
 # -----------------------------
 # 2. Average Price by Fuel Type
@@ -57,4 +75,14 @@ plt.scatter(df["Mileage_KM"], df["Price_USD"])
 plt.xlabel("Mileage (KM)")
 plt.ylabel("Price (USD)")
 plt.title("Mileage vs Price")
+plt.show()
+
+#------------------
+#5.fuel type sales
+#-----------------
+fuel_sales = df.groupby("Fuel_Type")["Sales_Volume"].sum()
+print(fuel_sales)
+
+fuel_sales.plot(kind="pie", autopct="%1.1f%%")
+plt.title("Sales by Fuel Type")
 plt.show()
